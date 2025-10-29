@@ -1,27 +1,36 @@
 {
-  "name": "my-project",
-  "version": "0.0.0",
+  "name": "nextjs-portfolio",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
   },
   "dependencies": {
     "aos": "^2.3.4",
-    "firebase": "^9.6.1",
-    "github-markdown-css": "^5.1.0",
-    "marked": "^4.0.7",
-    "rive-js": "^0.7.30",
-    "vue": "^3.2.6",
-    "vue-router": "^4.0.12",
-    "vuefire": "^2.2.5"
+    "dompurify": "^3.3.0",
+    "firebase": "^12.4.0",
+    "firebase-admin": "^13.5.0",
+    "github-markdown-css": "^5.8.1",
+    "kute.js": "^2.2.4",
+    "marked": "^16.4.1",
+    "next": "^16.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^1.6.1",
-    "@vue/compiler-sfc": "^3.2.6",
-    "autoprefixer": "^10.3.4",
-    "postcss": "^8.3.6",
-    "tailwindcss": "^2.2.15",
-    "vite": "^2.5.4"
+    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/aos": "^3.0.7",
+    "@types/dompurify": "^3.2.0",
+    "@types/node": "^20",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.1",
+    "tailwindcss": "^4",
+    "typescript": "5.9.3"
   }
 }
