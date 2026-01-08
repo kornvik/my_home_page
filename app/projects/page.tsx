@@ -32,7 +32,7 @@ export default function Projects() {
             Last Update : 18 Sep 2021
           </p>
         </div>
-
+      
         {/* <div className="w-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-16">
           <div className="w-full flex flex-row justify-around h-60 items-center px-10">
             <div className="w-0 max-w-2xl xl:w-1/2 px-1 md:px-20">
@@ -134,7 +134,6 @@ export default function Projects() {
             </div>
           </div>
         </div>
-
         {/* <div className="spacer3 purple_to_trans -mt-1 -mb-18 lg:-mb-20 relative z-40"></div> */}
         <section className="bg-fixed bg-no-repeat bg-cover bg-robot z-10">
           <h2
