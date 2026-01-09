@@ -1,7 +1,6 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Image from "next/image";
 import type { CardData } from "./components/RagingSea";
 
 const RagingSea = dynamic(() => import("./components/RagingSea"), {
@@ -85,19 +84,15 @@ export default function Home() {
             About Me
           </h2>
           <div className="flex gap-4 justify-center">
-            <Image
+            <img
               src="/assets/me2.jpeg"
               alt="Korn"
               className="rounded-xl shadow-lg w-24 h-24 md:w-32 md:h-32 object-cover rotate-[-3deg]"
-              width={128}
-              height={128}
             />
-            <Image
+            <img
               src="/assets/me3.jpg"
               alt="Korn"
               className="rounded-xl shadow-lg w-24 h-32 md:w-32 md:h-40 object-cover rotate-[3deg] mt-4"
-              width={128}
-              height={160}
             />
           </div>
         </div>
@@ -111,19 +106,15 @@ export default function Home() {
             {/* Intro */}
             <div className="flex flex-col items-center gap-4">
               <div className="flex gap-4 justify-center">
-                <Image
+                <img
                   src="/assets/me2.jpeg"
                   alt="Korn"
                   className="rounded-xl shadow-lg w-20 h-20 object-cover rotate-[-3deg]"
-                  width={80}
-                  height={80}
                 />
-                <Image
+                <img
                   src="/assets/me3.jpg"
                   alt="Korn"
                   className="rounded-xl shadow-lg w-20 h-28 object-cover rotate-[3deg] mt-2"
-                  width={80}
-                  height={112}
                 />
               </div>
               <p className="text-center text-blue-100">
