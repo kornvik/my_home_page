@@ -972,7 +972,7 @@ export default function RagingSea({
 
       if (isHorizontalDrag) {
         e.preventDefault();
-        currentDragOffset = -deltaX * 0.001;
+        currentDragOffset = deltaX * 0.003; // Positive for natural drag direction
         setDragOffset(currentDragOffset);
       } else if (Math.abs(deltaY) > 50 && !hasScrolled) {
         // Vertical swipe - move one slide (with threshold)
