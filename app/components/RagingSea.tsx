@@ -752,6 +752,7 @@ export default function RagingSea({
   const [dragOffset, setDragOffset] = useState(0);
   const [expandedCardIndex, setExpandedCardIndex] = useState<number | null>(null);
   const [dayAmount, setDayAmount] = useState(1); // 0 = night, 1 = day
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const dragStartX = useRef(0);
   const isScrolling = useRef(false);
@@ -957,10 +958,10 @@ export default function RagingSea({
       style={{ cursor: isDragging ? "grabbing" : "grab", backgroundColor: bgColor }}
     >
       {/* Floating Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-between items-start px-6 py-4">
+      <header className="fixed top-0 left-0 right-0 z-50 flex justify-end md:justify-between items-start px-6 py-4">
         <a
           href="/"
-          className="bg-white hover:bg-gray-50 transition-colors"
+          className="bg-white hover:bg-gray-50 transition-colors hidden md:block"
           style={{
             padding: "4px",
             border: "2px solid #1a1a1a",
@@ -982,7 +983,8 @@ export default function RagingSea({
             コーン
           </span>
         </a>
-        <nav className="flex gap-6 pt-2">
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex gap-6 pt-2">
           <a
             href="/"
             className="text-sm font-semibold transition-colors"
@@ -1005,7 +1007,71 @@ export default function RagingSea({
             Blogs
           </a>
         </nav>
+
+        {/* Mobile Hamburger Button */}
+        <button
+          className="md:hidden p-2"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            style={{ color: dayAmount > 0.5 ? "rgb(30, 41, 59)" : "rgba(255, 255, 255, 0.9)" }}
+          >
+            {mobileMenuOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
       </header>
+
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed top-14 right-4 z-50 md:hidden rounded-lg shadow-lg"
+          style={{ backgroundColor: dayAmount > 0.5 ? "white" : "rgb(31, 41, 55)" }}
+        >
+          <nav className="flex flex-col py-2">
+            <a
+              href="/"
+              className="px-6 py-3 text-sm font-semibold transition-colors"
+              style={{
+                color: dayAmount > 0.5 ? "rgb(30, 41, 59)" : "rgba(255, 255, 255, 1)",
+                backgroundColor: dayAmount > 0.5 ? "rgb(243, 244, 246)" : "rgb(55, 65, 81)"
+              }}
+            >
+              Home
+            </a>
+            <a
+              href="/projects"
+              className="px-6 py-3 text-sm transition-colors"
+              style={{ color: dayAmount > 0.5 ? "rgba(51, 65, 85, 0.9)" : "rgba(255, 255, 255, 0.8)" }}
+            >
+              Projects
+            </a>
+            <a
+              href="/blogs"
+              className="px-6 py-3 text-sm transition-colors"
+              style={{ color: dayAmount > 0.5 ? "rgba(51, 65, 85, 0.9)" : "rgba(255, 255, 255, 0.8)" }}
+            >
+              Blogs
+            </a>
+          </nav>
+        </div>
+      )}
+
+      {/* Overlay to close menu */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
 
       <Canvas
         camera={{ position: [0, 1.2, 3.5], fov: 75 }}
@@ -1118,7 +1184,7 @@ export default function RagingSea({
             />
           ))}
         </div>
-        <p className="text-white/70 text-sm">Drag to look around | Scroll to navigate</p>
+        <p className="text-white/70 text-sm text-center">Drag to look around | Scroll to navigate</p>
       </div>
     </div>
   );

@@ -44,7 +44,7 @@ export default function Projects() {
               Projects
             </h2>
             <p className="text-gray-500 text-base pt-3 font-mono pb-5">
-              Last Update : 18 Sep 2021
+              Last Update : 05 Jan 2026
             </p>
           </div>
         </div>
@@ -152,16 +152,16 @@ export default function Projects() {
         </div>
         {/* <div className="spacer3 purple_to_trans -mt-1 -mb-18 lg:-mb-20 relative z-40"></div> */}
         <section className="bg-fixed bg-no-repeat bg-cover bg-robot z-10 w-full">
-          <div className="w-full max-w-4xl mx-auto px-8 md:px-16 py-16 text-center">
+          <div className="w-full max-w-4xl mx-auto px-4 md:px-16 py-12 md:py-16 text-center">
             <h2
-              className="text-4xl font-bold pb-5 cursor-pointer"
+              className="text-xl md:text-4xl font-bold pb-3 md:pb-5 cursor-pointer"
               onClick={() =>
                 gotoContact("https://github.com/kornsinanju/IDC_2021_G3")
               }
             >
               Flying Toilet 🤖
             </h2>
-            <p className="font-sans hover:bg-gray-800 hover:bg-opacity-40 text-lg md:text-xl leading-relaxed">
+            <p className="font-sans hover:bg-gray-800 hover:bg-opacity-40 text-sm md:text-xl leading-relaxed">
               A winning robot project for International Design Contest Robocon
               2021 among all 83 representative students from university all over
               the world!
@@ -171,11 +171,11 @@ export default function Projects() {
         </section>
 
         <section className="red w-full">
-          <div className="w-full max-w-4xl mx-auto px-8 md:px-16 py-16 text-center">
-            <h2 className="text-4xl font-bold pb-5">
+          <div className="w-full max-w-4xl mx-auto px-4 md:px-16 py-12 md:py-16 text-center">
+            <h2 className="text-xl md:text-4xl font-bold pb-3 md:pb-5">
               Go Salmon Go!
             </h2>
-            <p className="text-lg md:text-xl font-sans leading-relaxed">
+            <p className="text-sm md:text-xl font-sans leading-relaxed">
               Inspired by Candy Crush and Plumber, we created a puzzle game where
               players have to move the river to make way for the fish! The game is
               implemented in Python using Pygame during 1 day hackathon by Digital
