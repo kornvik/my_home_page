@@ -25,7 +25,7 @@ export default async function Blogs() {
   };
 
   return (
-    <div className="w-full min-h-max flex flex-col justify-start items-center bg-gray-200 z-20 text-gray-800">
+    <div className="w-full min-h-screen flex flex-col justify-start items-center bg-gray-200 z-20 text-gray-800">
       <div className="w-full flex flex-col items-start bg-gray-200">
         <h2 className="font-bold text-4xl px-5 md:px-44 pt-12 font-mono">
           Blogs

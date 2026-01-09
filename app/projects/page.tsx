@@ -6,14 +6,28 @@ import LearnsByAIIllustration from "../components/LearnsByAIIllustration";
 
 export default function Projects() {
   useEffect(() => {
-    if (typeof window !== "undefined" && (window as any).KUTE) {
-      const tween = (window as any).KUTE.fromTo(
-        "#blob1",
-        { path: "#blob1" },
-        { path: "#blob2" },
-        { repeat: 999, duration: 3000, yoyo: true }
-      );
-      tween.start();
+    const initKute = () => {
+      if ((window as any).KUTE) {
+        const tween = (window as any).KUTE.fromTo(
+          "#blob1",
+          { path: "#blob1" },
+          { path: "#blob2" },
+          { repeat: 999, duration: 3000, yoyo: true }
+        );
+        tween.start();
+        return true;
+      }
+      return false;
+    };
+
+    // Try immediately, then poll if not available
+    if (!initKute()) {
+      const interval = setInterval(() => {
+        if (initKute()) {
+          clearInterval(interval);
+        }
+      }, 100);
+      return () => clearInterval(interval);
     }
   }, []);
 
@@ -24,13 +38,15 @@ export default function Projects() {
   return (
     <div className="w-full flex flex-col justify-start items-center bg-gray-50 z-20">
       <div className="w-full flex flex-col items-start bg-gray-900 text-gray-50 z-20">
-        <div className="bg-gray-900 z-20 w-full flex flex-col items-start">
-          <h2 className="font-bold text-4xl px-5 md:px-44 pt-12 font-mono">
-            Projects
-          </h2>
-          <p className="text-gray-500 text-base px-5 md:px-44 pt-3 font-mono pb-5">
-            Last Update : 18 Sep 2021
-          </p>
+        <div className="bg-gray-900 z-20 w-full flex flex-col items-center">
+          <div className="w-full max-w-4xl px-8 md:px-16">
+            <h2 className="font-bold text-4xl pt-12 font-mono">
+              Projects
+            </h2>
+            <p className="text-gray-500 text-base pt-3 font-mono pb-5">
+              Last Update : 18 Sep 2021
+            </p>
+          </div>
         </div>
       
         {/* <div className="w-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-16">
@@ -64,7 +80,7 @@ export default function Projects() {
           </div>
         </div> */}
         <div className="w-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 pt-16 pb-48">
-          <div className="w-full max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 px-10">
+          <div className="w-full max-w-4xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 px-8 md:px-16">
             {/* Illustration - Now on LEFT */}
             <div className="flex-1 w-full max-w-xl">
               <LearnsByAIIllustration />
@@ -98,13 +114,13 @@ export default function Projects() {
           </div>
         </div>
 
-        <div className="spacer3 purple_to_gray -mt-36 -mb-1"></div>
+        <div className="spacer3 purple_to_gray overlap-up"></div>
         <div className="bg-gray-900 w-full" id="lowpad">
-          <div className="w-full flex flex-row justify-around min-h-60">
-            <div className="w-full xl:w-1/2 md:px-20 px-6 lg:px-10 flex flex-col items-center justify-center">
-              <div className="cursor-pointer pb-5 flex flex-row">
+          <div className="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 px-8 md:px-16 py-16">
+            <div className="flex-1 flex flex-col items-center text-center">
+              <div className="cursor-pointer pb-5 flex flex-row items-center gap-2">
                 <h2
-                  className="3xl:text-5xl text-4xl font-bold"
+                  className="text-4xl font-bold"
                   onClick={() => gotoContact("https://reviewright.study")}
                 >
                   ReviewRight
@@ -122,7 +138,7 @@ export default function Projects() {
                 highschool students for intensive memory lessons.
               </p>
             </div>
-            <div className="w-0 max-w-2xl lg:w-1/2 px-0 2xl:px-40 lg:px-20">
+            <div className="flex-1 max-w-sm">
               <Image
                 src="/assets/ReviewRight.png"
                 alt="ReviewRight"
@@ -135,50 +151,54 @@ export default function Projects() {
           </div>
         </div>
         {/* <div className="spacer3 purple_to_trans -mt-1 -mb-18 lg:-mb-20 relative z-40"></div> */}
-        <section className="bg-fixed bg-no-repeat bg-cover bg-robot z-10">
-          <h2
-            className="3xl:text-5xl text-4xl font-bold pb-5 cursor-pointer"
-            onClick={() =>
-              gotoContact("https://github.com/kornsinanju/IDC_2021_G3")
-            }
-          >
-            Flying Toilet 🤖
-          </h2>
-          <p className="font-sans hover:bg-gray-800 hover:bg-opacity-40 2xl:text-3xl xl:text-2xl">
-            A winning robot project for International Design Contest Robocon
-            2021 among all 83 representative students from university all over
-            the world!
-            <br /> Using C# and Inventor to create.
-          </p>
+        <section className="bg-fixed bg-no-repeat bg-cover bg-robot z-10 w-full">
+          <div className="w-full max-w-4xl mx-auto px-8 md:px-16 py-16 text-center">
+            <h2
+              className="text-4xl font-bold pb-5 cursor-pointer"
+              onClick={() =>
+                gotoContact("https://github.com/kornsinanju/IDC_2021_G3")
+              }
+            >
+              Flying Toilet 🤖
+            </h2>
+            <p className="font-sans hover:bg-gray-800 hover:bg-opacity-40 text-lg md:text-xl leading-relaxed">
+              A winning robot project for International Design Contest Robocon
+              2021 among all 83 representative students from university all over
+              the world!
+              <br /> Using C# and Inventor to create.
+            </p>
+          </div>
         </section>
 
-        <section className="red">
-          <h2 className="3xl:text-5xl text-4xl font-bold pb-5 pt-16">
-            Go Salmon Go!
-          </h2>
-          <p className="text-xl font-sans 2xl:text-3xl xl:text-2xl">
-            Inspired by Candy Crush and Plumber, we created a puzzle game where
-            players have to move the river to make way for the fish! The game is
-            implemented in Python using Pygame during 1 day hackathon by Digital
-            Creators Club (Trap)
-          </p>
-          <div className="pt-10">
-            <iframe
-              style={{ width: "100%", height: "100%" }}
-              src="https://www.youtube.com/embed/H0wEopkBiW8"
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
+        <section className="red w-full">
+          <div className="w-full max-w-4xl mx-auto px-8 md:px-16 py-16 text-center">
+            <h2 className="text-4xl font-bold pb-5">
+              Go Salmon Go!
+            </h2>
+            <p className="text-lg md:text-xl font-sans leading-relaxed">
+              Inspired by Candy Crush and Plumber, we created a puzzle game where
+              players have to move the river to make way for the fish! The game is
+              implemented in Python using Pygame during 1 day hackathon by Digital
+              Creators Club (Trap)
+            </p>
+            <div className="pt-10">
+              <iframe
+                style={{ width: "100%", height: "400px" }}
+                src="https://www.youtube.com/embed/H0wEopkBiW8"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
           </div>
         </section>
 
         <div className="spacer layer1"></div>
 
-        <div className="w-full" id="grayon">
-          <div className="w-full flex flex-row justify-around h-64 pt-16 pb-16">
-            <div className="w-0 max-w-3xl xl:w-1/2 px-0 2xl:px-40 xl:px-20 z-20">
+        <div className="w-full -mt-20" id="grayon">
+          <div className="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 px-8 md:px-16 py-16">
+            <div className="flex-1 max-w-sm">
               <Image
                 src="/assets/my_blog_next.png"
                 alt="ReditClone"
@@ -190,10 +210,10 @@ export default function Projects() {
                 height={400}
               />
             </div>
-            <div className="w-full xl:w-1/2 md:px-20 px-1 flex flex-col items-center justify-center">
-              <div className="pb-5 flex flex-row">
+            <div className="flex-1 flex flex-col items-center text-center">
+              <div className="pb-5">
                 <h2
-                  className="3xl:text-5xl text-4xl font-bold cursor-pointer"
+                  className="text-4xl font-bold cursor-pointer"
                   onClick={() =>
                     gotoContact("https://github.com/kornsinanju/my_blog_nextjs")
                   }
@@ -201,7 +221,7 @@ export default function Projects() {
                   Redit Clone
                 </h2>
               </div>
-              <p className="text-xl font-sans 2xl:text-3xl xl:text-2xl">
+              <p className="text-lg md:text-xl font-sans leading-relaxed">
                 A personal project to create a Redit clone blog using
                 server-side rendering from nextjs and firebase as its database.
               </p>
@@ -213,23 +233,25 @@ export default function Projects() {
 
         <section className="pink w-full">
           <div className="absolute pt-28 w-full flex flex-col items-center justify-center">
-            <h2
-              className="text-4xl font-bold pb-5 cursor-pointer"
-              onClick={() =>
-                gotoContact("https://github.com/kornsinanju/clone_agario")
-              }
-            >
-              Agar IO Clone
-            </h2>
-            <p className="text-xl font-sans px-10 2xl:text-3xl xl:text-2xl">
-              Agar.io clone project to practice real-time communication by
-              applying websocket using Vue.JS, CanvasJS, MongoDB, and Flask :)
-            </p>
+            <div className="w-full max-w-4xl mx-auto px-8 md:px-16 text-center">
+              <h2
+                className="text-4xl font-bold pb-5 cursor-pointer"
+                onClick={() =>
+                  gotoContact("https://github.com/kornsinanju/clone_agario")
+                }
+              >
+                Agar IO Clone
+              </h2>
+              <p className="text-lg md:text-xl font-sans leading-relaxed">
+                Agar.io clone project to practice real-time communication by
+                applying websocket using Vue.JS, CanvasJS, MongoDB, and Flask :)
+              </p>
+            </div>
           </div>
           <svg
             id="visual"
             viewBox="0 0 960 300"
-            width="1000%"
+            width="100%"
             height="300"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"

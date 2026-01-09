@@ -157,6 +157,11 @@ section {
   z-index: 40;
 }
 
+.spacer3.overlap-up {
+  margin-top: calc(-100% * 140 / 960);
+  margin-bottom: -1px;
+}
+
 .purple_to_gray {
   background-image: url("/assets/bg-images/purple_to_gray.svg");
 }
