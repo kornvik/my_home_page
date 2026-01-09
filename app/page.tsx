@@ -29,6 +29,7 @@ export default function Home() {
       title: "Welcome",
       content: (
         <div className="text-center text-white">
+          <p className="text-xl md:text-2xl text-blue-100 mb-2">Hello! I&apos;m</p>
           <h1 className="text-5xl md:text-7xl font-bold mb-6 drop-shadow-lg">
             Korn
           </h1>
@@ -47,6 +48,9 @@ export default function Home() {
       ),
       expandedContent: (
         <div className="text-center text-white">
+          <p className="text-xl md:text-2xl text-blue-100 mb-2">
+            Hello! I&apos;m
+          </p>
           <h1 className="text-5xl md:text-6xl font-bold mb-2 drop-shadow-lg">
             Korn
           </h1>
@@ -69,6 +73,7 @@ export default function Home() {
             I enjoy building things that move, think, and connect —
             from autonomous robots to web applications.
           </p>
+          <img src="https://media.giphy.com/media/zJ3V6Ot51H8Y0/giphy.gif" width="150" alt="wave" className="mx-auto mt-20 hidden md:block" />
         </div>
       ),
     },

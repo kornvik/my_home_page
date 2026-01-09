@@ -879,6 +879,9 @@ export default function RagingSea({
     };
 
     const handleTouchMove = (e: TouchEvent) => {
+      // Don't handle touch when card is expanded
+      if (expandedCardIndex !== null) return;
+
       const touchX = e.touches[0].clientX;
       const touchY = e.touches[0].clientY;
       const deltaX = touchX - touchStartX;
@@ -909,6 +912,9 @@ export default function RagingSea({
     };
 
     const handleTouchEnd = () => {
+      // Don't handle touch when card is expanded
+      if (expandedCardIndex !== null) return;
+
       if (isHorizontalDrag) {
         // Check if dragged past threshold to snap to next/prev card
         if (Math.abs(currentDragOffset) > snapThreshold) {
