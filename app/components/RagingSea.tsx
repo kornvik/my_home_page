@@ -935,49 +935,41 @@ export default function RagingSea({
     };
   }, [isDragging, dragOffset, cards.length, expandedCardIndex]);
 
-  // Touch drag support
+  // Touch drag support - use refs to avoid stale closures
+  const touchStartRef = useRef({ x: 0, y: 0 });
+  const touchStateRef = useRef({ isHorizontalDrag: false, hasScrolled: false, lastDeltaX: 0 });
+
   useEffect(() => {
     const anglePerCard = (Math.PI * 2) / cards.length;
-    const snapThreshold = anglePerCard * 0.3;
-    let touchStartX = 0;
-    let touchStartY = 0;
-    let isHorizontalDrag = false;
-    let hasScrolled = false;
-    let currentDragOffset = 0;
+    const snapThreshold = 50; // pixels threshold for snap
 
     const handleTouchStart = (e: TouchEvent) => {
-      // Don't handle touch when card is expanded
       if (expandedCardIndex !== null) return;
-      touchStartX = e.touches[0].clientX;
-      touchStartY = e.touches[0].clientY;
-      isHorizontalDrag = false;
-      hasScrolled = false;
-      currentDragOffset = 0;
+      touchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      touchStateRef.current = { isHorizontalDrag: false, hasScrolled: false, lastDeltaX: 0 };
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      // Don't handle touch when card is expanded
       if (expandedCardIndex !== null) return;
 
       const touchX = e.touches[0].clientX;
       const touchY = e.touches[0].clientY;
-      const deltaX = touchX - touchStartX;
-      const deltaY = touchY - touchStartY;
+      const deltaX = touchX - touchStartRef.current.x;
+      const deltaY = touchY - touchStartRef.current.y;
 
       // Determine if horizontal or vertical swipe
-      if (!isHorizontalDrag && Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
-        isHorizontalDrag = true;
+      if (!touchStateRef.current.isHorizontalDrag && Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 10) {
+        touchStateRef.current.isHorizontalDrag = true;
         setIsDragging(true);
       }
 
-      if (isHorizontalDrag) {
+      if (touchStateRef.current.isHorizontalDrag) {
         e.preventDefault();
-        currentDragOffset = deltaX * 0.003; // Positive for natural drag direction
-        setDragOffset(currentDragOffset);
-      } else if (Math.abs(deltaY) > 50 && !hasScrolled) {
-        // Vertical swipe - move one slide (with threshold)
+        touchStateRef.current.lastDeltaX = deltaX;
+        setDragOffset(-deltaX * 0.004);
+      } else if (Math.abs(deltaY) > 50 && !touchStateRef.current.hasScrolled) {
         e.preventDefault();
-        hasScrolled = true;
+        touchStateRef.current.hasScrolled = true;
         const direction = deltaY > 0 ? -1 : 1;
         setActiveIndex((prev) => {
           const next = prev + direction;
@@ -989,13 +981,12 @@ export default function RagingSea({
     };
 
     const handleTouchEnd = () => {
-      // Don't handle touch when card is expanded
-      if (expandedCardIndex !== null) return;
-
-      if (isHorizontalDrag) {
-        // Check if dragged past threshold to snap to next/prev card
-        if (Math.abs(currentDragOffset) > snapThreshold) {
-          const direction = currentDragOffset > 0 ? 1 : -1;
+      if (touchStateRef.current.isHorizontalDrag) {
+        const deltaX = touchStateRef.current.lastDeltaX;
+        // Snap based on drag distance in pixels
+        if (Math.abs(deltaX) > snapThreshold) {
+          // Drag right (positive deltaX) = go to previous card, drag left (negative) = go to next
+          const direction = deltaX > 0 ? -1 : 1;
           setActiveIndex((prev) => {
             const next = prev + direction;
             if (next < 0) return cards.length - 1;
@@ -1003,12 +994,10 @@ export default function RagingSea({
             return next;
           });
         }
-        setIsDragging(false);
-        setDragOffset(0);
       }
-      isHorizontalDrag = false;
-      hasScrolled = false;
-      currentDragOffset = 0;
+      setIsDragging(false);
+      setDragOffset(0);
+      touchStateRef.current = { isHorizontalDrag: false, hasScrolled: false, lastDeltaX: 0 };
     };
 
     const container = containerRef.current;
@@ -1016,6 +1005,7 @@ export default function RagingSea({
       container.addEventListener("touchstart", handleTouchStart, { passive: false });
       container.addEventListener("touchmove", handleTouchMove, { passive: false });
       container.addEventListener("touchend", handleTouchEnd);
+      container.addEventListener("touchcancel", handleTouchEnd);
     }
 
     return () => {
@@ -1023,9 +1013,10 @@ export default function RagingSea({
         container.removeEventListener("touchstart", handleTouchStart);
         container.removeEventListener("touchmove", handleTouchMove);
         container.removeEventListener("touchend", handleTouchEnd);
+        container.removeEventListener("touchcancel", handleTouchEnd);
       }
     };
-  }, [isDragging, expandedCardIndex]);
+  }, [expandedCardIndex, cards.length]);
 
   return (
     <div
