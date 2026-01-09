@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getAdminDB } from "@/lib/firebase-admin";
 
 export const runtime = "nodejs"; // ensure Node runtime (Admin SDK isn't Edge)
-export const dynamic = "force-dynamic"; // don't prerender API routes
+export const dynamic = "force-dynamic"; // skip build-time prerendering
 
 export type Post = {
   title: string;
@@ -34,27 +34,35 @@ function toISO(value: any): string {
 }
 
 export async function GET() {
-  const db = getAdminDB();
+  try {
+    const db = getAdminDB();
 
-  const snap = await db
-    .collection("users")
-    .doc("YB9ePSwGJ0MrccRxcSuymOOYDM92")
-    .collection("posts")
-    .where("published", "==", true)
-    .orderBy("createdAt", "desc")
-    .get();
+    const snap = await db
+      .collection("users")
+      .doc("YB9ePSwGJ0MrccRxcSuymOOYDM92")
+      .collection("posts")
+      .where("published", "==", true)
+      .orderBy("createdAt", "desc")
+      .get();
 
-  const posts: Post[] = snap.docs.map((d) => {
-    const x = d.data() as any;
-    // console.log(x)
-    return {
-      title: x.title,
-      content: x.content ?? "",
-      slug: x.slug,
-      heartCount: x.heartCount ?? 0,
-      createdAt: toISO(x.createdAt),
-    };
-  });
+    const posts: Post[] = snap.docs.map((d) => {
+      const x = d.data() as any;
+      return {
+        title: x.title,
+        content: x.content ?? "",
+        slug: x.slug,
+        heartCount: x.heartCount ?? 0,
+        createdAt: toISO(x.createdAt),
+      };
+    });
 
-  return NextResponse.json(posts);
+    return NextResponse.json(posts, {
+      headers: {
+        "Cache-Control": "s-maxage=60, stale-while-revalidate=300",
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    return NextResponse.json([], { status: 500 });
+  }
 }
