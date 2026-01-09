@@ -1,18 +1,51 @@
 // app/blogs/page.tsx
 import Link from "next/link";
-import type { Post } from "@/app/api/posts/route";
-import { getBaseUrl } from "@/lib/getBaseUrl";
+import { getAdminDB } from "@/lib/firebase-admin";
 import { formatDate } from "@/lib/dateUtils";
 
-export const dynamic = "force-dynamic"; // skip build-time prerendering
+export const revalidate = 60; // ISR - regenerate every 60s
+
+interface Post {
+  title: string;
+  content: string;
+  slug: string;
+  createdAt: string;
+  heartCount?: number;
+}
+
+function toISO(value: any): string {
+  if (value?.toDate && typeof value.toDate === "function") {
+    return value.toDate().toISOString();
+  }
+  if (value?.seconds != null) {
+    const ms = value.seconds * 1000 + Math.floor((value.nanoseconds ?? 0) / 1e6);
+    return new Date(ms).toISOString();
+  }
+  if (value instanceof Date) return value.toISOString();
+  if (typeof value === "string") return value;
+  return new Date(0).toISOString();
+}
 
 async function getPosts(): Promise<Post[]> {
-  const baseUrl = getBaseUrl();
-  const res = await fetch(`${baseUrl}/api/posts`, {
-    next: { revalidate: 60 },
+  const db = getAdminDB();
+  const snap = await db
+    .collection("users")
+    .doc("YB9ePSwGJ0MrccRxcSuymOOYDM92")
+    .collection("posts")
+    .where("published", "==", true)
+    .orderBy("createdAt", "desc")
+    .get();
+
+  return snap.docs.map((d) => {
+    const x = d.data() as any;
+    return {
+      title: x.title,
+      content: x.content ?? "",
+      slug: x.slug,
+      heartCount: x.heartCount ?? 0,
+      createdAt: toISO(x.createdAt),
+    };
   });
-  if (!res.ok) throw new Error("Failed to load posts");
-  return res.json();
 }
 
 export default async function Blogs() {
