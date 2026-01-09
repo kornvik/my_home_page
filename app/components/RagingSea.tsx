@@ -450,6 +450,80 @@ void main() {
 }
 `;
 
+// Snow particle system for night scene
+function Snow({ dayAmount }: { dayAmount: number }) {
+  const count = 1000;
+  const meshRef = useRef<THREE.Points>(null);
+
+  const { positions, velocities } = useMemo(() => {
+    const positions = new Float32Array(count * 3);
+    const velocities = new Float32Array(count);
+
+    for (let i = 0; i < count; i++) {
+      // Spread snow in a cylinder around the scene
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 2 + Math.random() * 8;
+      positions[i * 3] = Math.sin(angle) * radius;
+      positions[i * 3 + 1] = Math.random() * 10 - 2; // Height from -2 to 8
+      positions[i * 3 + 2] = Math.cos(angle) * radius;
+      velocities[i] = 0.5 + Math.random() * 0.5; // Fall speed variation
+    }
+
+    return { positions, velocities };
+  }, []);
+
+  useFrame((state, delta) => {
+    if (!meshRef.current) return;
+
+    const positionAttribute = meshRef.current.geometry.attributes.position;
+    const posArray = positionAttribute.array as Float32Array;
+
+    for (let i = 0; i < count; i++) {
+      // Fall down
+      posArray[i * 3 + 1] -= velocities[i] * delta * 2;
+
+      // Slight horizontal drift
+      posArray[i * 3] += Math.sin(state.clock.elapsedTime + i) * delta * 0.1;
+      posArray[i * 3 + 2] += Math.cos(state.clock.elapsedTime * 0.7 + i) * delta * 0.1;
+
+      // Reset to top when below scene
+      if (posArray[i * 3 + 1] < -2) {
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 2 + Math.random() * 8;
+        posArray[i * 3] = Math.sin(angle) * radius;
+        posArray[i * 3 + 1] = 8 + Math.random() * 2;
+        posArray[i * 3 + 2] = Math.cos(angle) * radius;
+      }
+    }
+
+    positionAttribute.needsUpdate = true;
+  });
+
+  // Snow opacity based on night (inverse of dayAmount)
+  const snowOpacity = Math.max(0, 1 - dayAmount * 1.5);
+
+  if (snowOpacity <= 0) return null;
+
+  return (
+    <points ref={meshRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[positions, 3]}
+        />
+      </bufferGeometry>
+      <pointsMaterial
+        color="#ffffff"
+        size={0.05}
+        transparent
+        opacity={snowOpacity * 0.8}
+        sizeAttenuation
+        depthWrite={false}
+      />
+    </points>
+  );
+}
+
 function HokusaiSky({ skyColor, cloudColor, cameraAngle }: { skyColor: string; cloudColor: string; cameraAngle: number }) {
   const uniforms = useMemo(
     () => ({
@@ -615,11 +689,12 @@ interface SceneProps {
   activeIndex: number;
   dragOffset: number;
   isDragging: boolean;
+  dayAmount: number;
   onCardClick: (index: number) => void;
   onDayAmountChange: (amount: number) => void;
 }
 
-function Scene({ cards, depthColor, surfaceColor, bgColor, activeIndex, dragOffset, isDragging, onCardClick, onDayAmountChange }: SceneProps) {
+function Scene({ cards, depthColor, surfaceColor, bgColor, activeIndex, dragOffset, isDragging, dayAmount, onCardClick, onDayAmountChange }: SceneProps) {
   const { camera } = useThree();
   const totalSections = cards.length;
   const currentAngleRef = useRef(Math.PI); // Start at sun side
@@ -714,6 +789,7 @@ function Scene({ cards, depthColor, surfaceColor, bgColor, activeIndex, dragOffs
       <HokusaiSky skyColor={bgColor} cloudColor="#fffef7" cameraAngle={cameraAngle} />
       <Water depthColor={depthColor} surfaceColor={surfaceColor} />
       <MtFuji />
+      <Snow dayAmount={dayAmount} />
 
       {cards.map((card, index) => (
         <ContentCard
@@ -1019,7 +1095,7 @@ export default function RagingSea({
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            style={{ color: dayAmount > 0.5 ? "rgb(30, 41, 59)" : "rgba(255, 255, 255, 0.9)" }}
+            style={{ color: dayAmount > 0.5 ? "rgb(30, 41, 59)" : "rgba(255, 255, 255, 1)" }}
           >
             {mobileMenuOpen ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1086,6 +1162,7 @@ export default function RagingSea({
           activeIndex={activeIndex}
           dragOffset={dragOffset}
           isDragging={isDragging}
+          dayAmount={dayAmount}
           onCardClick={handleCardClick}
           onDayAmountChange={setDayAmount}
         />
