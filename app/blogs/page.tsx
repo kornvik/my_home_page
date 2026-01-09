@@ -4,7 +4,7 @@ import type { Post } from "@/app/api/posts/route";
 import { getBaseUrl } from "@/lib/getBaseUrl";
 import { formatDate } from "@/lib/dateUtils";
 
-export const revalidate = 60; // (optional) cache the page too
+export const dynamic = "force-dynamic"; // skip build-time prerendering
 
 async function getPosts(): Promise<Post[]> {
   const baseUrl = getBaseUrl();
