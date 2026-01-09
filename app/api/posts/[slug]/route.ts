@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getAdminDB } from "@/lib/firebase-admin";
 
 export const runtime = "nodejs";
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export async function GET(
   _req: Request,

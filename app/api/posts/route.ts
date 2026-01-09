@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { getAdminDB } from "@/lib/firebase-admin";
 
 export const runtime = "nodejs"; // ensure Node runtime (Admin SDK isn't Edge)
-export const revalidate = 60; // cache responses for 60s
+export const dynamic = "force-dynamic"; // don't prerender API routes
 
 export type Post = {
   title: string;
