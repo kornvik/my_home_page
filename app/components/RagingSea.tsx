@@ -524,6 +524,219 @@ function Snow({ dayAmount }: { dayAmount: number }) {
   );
 }
 
+// Sakura petal shader for realistic petals with 3D tumbling
+const sakuraVertexShader = `
+attribute float rotation;
+attribute float tumble;
+attribute float size;
+attribute vec3 petalColor;
+
+varying float vRotation;
+varying float vTumble;
+varying vec3 vColor;
+
+void main() {
+  vRotation = rotation;
+  vTumble = tumble;
+  vColor = petalColor;
+
+  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+  gl_PointSize = size * (300.0 / -mvPosition.z);
+  gl_Position = projectionMatrix * mvPosition;
+}
+`;
+
+const sakuraFragmentShader = `
+varying float vRotation;
+varying float vTumble;
+varying vec3 vColor;
+
+void main() {
+  vec2 center = gl_PointCoord - 0.5;
+
+  // Rotate the coordinate (spin around Z axis)
+  float c = cos(vRotation);
+  float s = sin(vRotation);
+  vec2 rotated = vec2(
+    center.x * c - center.y * s,
+    center.x * s + center.y * c
+  );
+
+  // Simulate 3D tumbling - just compress horizontally when edge-on
+  // This is like viewing a spinning coin from the side
+  float tumbleFactor = abs(cos(vTumble));
+  // Minimum 0.3 so petal never fully disappears
+  float horizScale = 0.3 + tumbleFactor * 0.7;
+
+  // Apply tumble compression to x only
+  float x = (rotated.x / horizScale) * 2.5;
+  float y = rotated.y * 3.5;
+
+  // Petal shape - simple ellipse
+  float dist = x * x + y * y;
+  float petal = 1.0 - smoothstep(0.4, 0.6, dist);
+
+  if (petal < 0.1) discard;
+
+  // Subtle shading variation based on tumble
+  float shade = 0.85 + 0.15 * tumbleFactor;
+
+  // Gradient from center to edge
+  vec3 finalColor = vColor * shade;
+
+  gl_FragColor = vec4(finalColor, petal * 0.85);
+}
+`;
+
+// Sakura leaves particle system for daytime
+function SakuraLeaves({ dayAmount }: { dayAmount: number }) {
+  const count = 500;
+  const meshRef = useRef<THREE.Points>(null);
+
+  const { positions, velocities, rotations, tumbles, sizes, colors, rotationSpeeds, tumbleSpeeds, swayOffsets } = useMemo(() => {
+    const positions = new Float32Array(count * 3);
+    const velocities = new Float32Array(count);
+    const rotations = new Float32Array(count);
+    const tumbles = new Float32Array(count);
+    const sizes = new Float32Array(count);
+    const colors = new Float32Array(count * 3);
+    const rotationSpeeds = new Float32Array(count);
+    const tumbleSpeeds = new Float32Array(count);
+    const swayOffsets = new Float32Array(count);
+
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const radius = 2 + Math.random() * 8;
+      positions[i * 3] = Math.sin(angle) * radius;
+      positions[i * 3 + 1] = Math.random() * 10 - 2;
+      positions[i * 3 + 2] = Math.cos(angle) * radius;
+
+      velocities[i] = 0.2 + Math.random() * 0.3; // Slower fall than snow
+      rotations[i] = Math.random() * Math.PI * 2;
+      tumbles[i] = Math.random() * Math.PI * 2; // Initial tumble angle
+      sizes[i] = 0.08 + Math.random() * 0.06; // Varied sizes
+      rotationSpeeds[i] = (Math.random() - 0.5) * 3; // Spin speed (faster)
+      tumbleSpeeds[i] = 1.5 + Math.random() * 2.5; // Tumble/flip speed
+      swayOffsets[i] = Math.random() * Math.PI * 2; // Random phase for swaying
+
+      // Pink color variations
+      const pinkVariation = Math.random();
+      if (pinkVariation < 0.4) {
+        // Light pink
+        colors[i * 3] = 1.0;
+        colors[i * 3 + 1] = 0.75 + Math.random() * 0.1;
+        colors[i * 3 + 2] = 0.8 + Math.random() * 0.1;
+      } else if (pinkVariation < 0.7) {
+        // Soft pink
+        colors[i * 3] = 0.98;
+        colors[i * 3 + 1] = 0.65 + Math.random() * 0.1;
+        colors[i * 3 + 2] = 0.72 + Math.random() * 0.1;
+      } else if (pinkVariation < 0.9) {
+        // White-ish pink
+        colors[i * 3] = 1.0;
+        colors[i * 3 + 1] = 0.9 + Math.random() * 0.1;
+        colors[i * 3 + 2] = 0.92 + Math.random() * 0.08;
+      } else {
+        // Deeper pink accent
+        colors[i * 3] = 0.95;
+        colors[i * 3 + 1] = 0.5 + Math.random() * 0.1;
+        colors[i * 3 + 2] = 0.6 + Math.random() * 0.1;
+      }
+    }
+
+    return { positions, velocities, rotations, tumbles, sizes, colors, rotationSpeeds, tumbleSpeeds, swayOffsets };
+  }, []);
+
+  useFrame((state, delta) => {
+    if (!meshRef.current) return;
+
+    const positionAttribute = meshRef.current.geometry.attributes.position;
+    const rotationAttribute = meshRef.current.geometry.attributes.rotation;
+    const tumbleAttribute = meshRef.current.geometry.attributes.tumble;
+    const posArray = positionAttribute.array as Float32Array;
+    const rotArray = rotationAttribute.array as Float32Array;
+    const tumbleArray = tumbleAttribute.array as Float32Array;
+    const time = state.clock.elapsedTime;
+
+    for (let i = 0; i < count; i++) {
+      // Fall down slowly with gentle floating motion
+      posArray[i * 3 + 1] -= velocities[i] * delta * 1.5;
+
+      // More pronounced horizontal sway - petals flutter in the wind
+      const swayPhase = swayOffsets[i];
+      posArray[i * 3] += Math.sin(time * 0.8 + swayPhase) * delta * 0.3;
+      posArray[i * 3 + 2] += Math.cos(time * 0.6 + swayPhase * 1.3) * delta * 0.25;
+
+      // Add occasional gusts
+      const gustPhase = Math.sin(time * 0.2 + i * 0.01);
+      if (gustPhase > 0.7) {
+        posArray[i * 3] += delta * 0.5;
+        posArray[i * 3 + 2] += delta * 0.3;
+      }
+
+      // Spin the petal (rotation around facing axis)
+      rotArray[i] += rotationSpeeds[i] * delta;
+
+      // Tumble the petal (flipping motion like a real leaf)
+      tumbleArray[i] += tumbleSpeeds[i] * delta;
+
+      // Reset to top when below scene
+      if (posArray[i * 3 + 1] < -2) {
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 2 + Math.random() * 8;
+        posArray[i * 3] = Math.sin(angle) * radius;
+        posArray[i * 3 + 1] = 8 + Math.random() * 2;
+        posArray[i * 3 + 2] = Math.cos(angle) * radius;
+      }
+    }
+
+    positionAttribute.needsUpdate = true;
+    rotationAttribute.needsUpdate = true;
+    tumbleAttribute.needsUpdate = true;
+  });
+
+  // Sakura opacity based on day (appears when dayAmount is high)
+  const sakuraOpacity = Math.max(0, (dayAmount - 0.3) * 1.5);
+
+  if (sakuraOpacity <= 0) return null;
+
+  return (
+    <points ref={meshRef}>
+      <bufferGeometry>
+        <bufferAttribute
+          attach="attributes-position"
+          args={[positions, 3]}
+        />
+        <bufferAttribute
+          attach="attributes-rotation"
+          args={[rotations, 1]}
+        />
+        <bufferAttribute
+          attach="attributes-tumble"
+          args={[tumbles, 1]}
+        />
+        <bufferAttribute
+          attach="attributes-size"
+          args={[sizes, 1]}
+        />
+        <bufferAttribute
+          attach="attributes-petalColor"
+          args={[colors, 3]}
+        />
+      </bufferGeometry>
+      <shaderMaterial
+        vertexShader={sakuraVertexShader}
+        fragmentShader={sakuraFragmentShader}
+        transparent
+        depthWrite={false}
+        uniforms={{
+          opacity: { value: sakuraOpacity }
+        }}
+      />
+    </points>
+  );
+}
+
 function HokusaiSky({ skyColor, cloudColor, cameraAngle }: { skyColor: string; cloudColor: string; cameraAngle: number }) {
   const uniforms = useMemo(
     () => ({
@@ -790,6 +1003,7 @@ function Scene({ cards, depthColor, surfaceColor, bgColor, activeIndex, dragOffs
       <Water depthColor={depthColor} surfaceColor={surfaceColor} />
       <MtFuji />
       <Snow dayAmount={dayAmount} />
+      <SakuraLeaves dayAmount={dayAmount} />
 
       {cards.map((card, index) => (
         <ContentCard
@@ -940,7 +1154,6 @@ export default function RagingSea({
   const touchStateRef = useRef({ isHorizontalDrag: false, hasScrolled: false, lastDeltaX: 0 });
 
   useEffect(() => {
-    const anglePerCard = (Math.PI * 2) / cards.length;
     const snapThreshold = 50; // pixels threshold for snap
 
     const handleTouchStart = (e: TouchEvent) => {
