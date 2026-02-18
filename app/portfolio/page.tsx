@@ -113,7 +113,7 @@ export default function RoboticsPortfolio() {
             <a href="https://linkedin.com/in/kornvik-tanpipat" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
               LinkedIn
             </a>
-            <a href="https://github.com/poomkorn" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
+            <a href="https://github.com/kornvik" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">
               GitHub
             </a>
             <a href="https://www.kornvik.com" className="text-blue-600 hover:underline">
