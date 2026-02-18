@@ -1286,6 +1286,13 @@ export default function RagingSea({
           >
             Blogs
           </a>
+          <a
+            href="/portfolio"
+            className="text-sm transition-colors"
+            style={{ color: dayAmount > 0.5 ? "rgba(51, 65, 85, 0.7)" : "rgba(255, 255, 255, 0.8)" }}
+          >
+            Portfolio
+          </a>
         </nav>
 
         {/* Mobile Hamburger Button */}
@@ -1340,6 +1347,13 @@ export default function RagingSea({
               style={{ color: dayAmount > 0.5 ? "rgba(51, 65, 85, 0.9)" : "rgba(255, 255, 255, 0.8)" }}
             >
               Blogs
+            </a>
+            <a
+              href="/portfolio"
+              className="px-6 py-3 text-sm transition-colors"
+              style={{ color: dayAmount > 0.5 ? "rgba(51, 65, 85, 0.9)" : "rgba(255, 255, 255, 0.8)" }}
+            >
+              Portfolio
             </a>
           </nav>
         </div>

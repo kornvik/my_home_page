@@ -10,8 +10,9 @@ const AppShell: FC<PropsWithChildren> = ({ children }) => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Homepage has its own layout - render children directly
+  // Homepage and portfolio have their own layout - render children directly
   const isHomepage = pathname === "/";
+  const isPortfolio = pathname === "/portfolio";
 
   useEffect(() => {
     AOS.init({ duration: 1200 });
@@ -26,8 +27,8 @@ const AppShell: FC<PropsWithChildren> = ({ children }) => {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  // Homepage uses its own full-screen layout
-  if (isHomepage) {
+  // Homepage and portfolio use their own full-screen layout
+  if (isHomepage || isPortfolio) {
     return <>{children}</>;
   }
 
@@ -96,6 +97,16 @@ const AppShell: FC<PropsWithChildren> = ({ children }) => {
           >
             Blogs
           </Link>
+          <Link
+            href="/portfolio"
+            className={`text-sm transition-colors ${
+              pathname === "/portfolio"
+                ? isDarkBg ? "text-white font-semibold" : "text-slate-800 font-semibold"
+                : isDarkBg ? "text-white/80 hover:text-white" : "text-slate-700/70 hover:text-slate-800"
+            }`}
+          >
+            Portfolio
+          </Link>
         </nav>
 
         {/* Mobile Hamburger Button */}
@@ -152,6 +163,16 @@ const AppShell: FC<PropsWithChildren> = ({ children }) => {
               }`}
             >
               Blogs
+            </Link>
+            <Link
+              href="/portfolio"
+              className={`px-6 py-3 text-sm transition-colors ${
+                pathname === "/portfolio"
+                  ? isDarkBg ? "text-white font-semibold bg-gray-700" : "text-slate-800 font-semibold bg-gray-100"
+                  : isDarkBg ? "text-white/80 hover:bg-gray-700" : "text-slate-700 hover:bg-gray-100"
+              }`}
+            >
+              Portfolio
             </Link>
           </nav>
         </div>
