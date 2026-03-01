@@ -10,7 +10,7 @@ const AppShell: FC<PropsWithChildren> = ({ children }) => {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Homepage and portfolio have their own layout - render children directly
+  // Homepage has its own layout - render children directly
   const isHomepage = pathname === "/";
   const isPortfolio = pathname === "/portfolio";
 
@@ -27,8 +27,8 @@ const AppShell: FC<PropsWithChildren> = ({ children }) => {
     setMobileMenuOpen(false);
   }, [pathname]);
 
-  // Homepage and portfolio use their own full-screen layout
-  if (isHomepage || isPortfolio) {
+  // Homepage uses its own full-screen layout
+  if (isHomepage) {
     return <>{children}</>;
   }
 
@@ -39,10 +39,10 @@ const AppShell: FC<PropsWithChildren> = ({ children }) => {
   return (
     <div id="app" className="min-h-screen">
       {/* Floating Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 flex justify-end md:justify-between items-start px-6 py-4">
+      <header className={`fixed top-0 left-0 right-0 z-50 flex items-start px-6 py-4 ${isPortfolio ? "justify-end" : "justify-end md:justify-between"}`}>
         <Link
           href="/"
-          className="bg-white hover:bg-gray-50 transition-colors hidden md:block"
+          className={`bg-white hover:bg-gray-50 transition-colors hidden ${isPortfolio ? "hidden" : "md:block"}`}
           style={{
             padding: "4px",
             border: "2px solid #1a1a1a",

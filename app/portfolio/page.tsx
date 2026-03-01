@@ -66,7 +66,7 @@ const PROJECTS = [
     advisor: null,
     description:
       "Implemented PID control in C# and designed robot chassis in Autodesk for international robot design competition. Team lead.",
-    image: null,
+    image: "/portfolio/idc-robocon.jpg",
     video: null,
     links: [
       { label: "GitHub", url: "https://github.com/kornvik/IDC_2021_G3" },
