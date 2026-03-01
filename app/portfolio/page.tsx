@@ -91,10 +91,10 @@ const PROJECTS = [
 export default function RoboticsPortfolio() {
   return (
     <div className="min-h-screen bg-white">
-      <div className="w-full px-8 md:px-12 lg:px-20 py-12">
+      <div className="w-full px-6 md:px-8 lg:px-16 pt-14 pb-4 md:py-12">
 
         {/* Header */}
-        <header className="mb-12">
+        <header className="mb-4 md:mb-12">
           <h1 className="text-2xl font-bold text-gray-900 mb-1">
             Kornvik Tanpipat
           </h1>
@@ -126,10 +126,10 @@ export default function RoboticsPortfolio() {
         <hr className="border-gray-200 mb-10" />
 
         {/* Research */}
-        <section className="mb-12">
-          <h2 className="text-lg font-bold text-gray-900 mb-6">Research & Projects</h2>
+        <div className="mb-4 md:mb-12">
+          <h2 className="text-lg font-bold text-gray-900 mb-3 md:mb-6">Research & Projects</h2>
 
-          <div className="space-y-8">
+          <div className="space-y-4 md:space-y-8">
             {PROJECTS.map((project) => (
               <div key={project.id} className="flex gap-5">
                 {/* Image/Video */}
@@ -196,7 +196,7 @@ export default function RoboticsPortfolio() {
               </div>
             ))}
           </div>
-        </section>
+        </div>
 
         {/* Footer */}
         <footer className="text-xs text-gray-400 pt-8 border-t border-gray-200">
