@@ -7,11 +7,11 @@ const PROJECTS = [
     id: "vln",
     title: "Vision-Language Navigation with Factor Graphs",
     venue: "Mapping and Motion Lab, University of Michigan",
-    year: "2025",
+    year: "2026",
     advisor: "Prof. Bernadette Bucher",
     description:
-      "Developing a navigation policy that fuses natural language instructions with visual observations. Factor graphs encode spatial, semantic, and temporal constraints. SAM3 provides open-vocabulary detection with evaluation in Habitat simulation.",
-    image: null,
+      "Developing a navigation policy that fuses natural language instructions with visual observations. Factor graphs encode spatial, semantic, and temporal constraints. SAM3 provides open-vocabulary detection with evaluation in Habitat simulation. Workshop paper at RSS 2026.",
+    image: "/portfolio/vln.gif",
     video: null,
     links: [],
   },
@@ -200,7 +200,7 @@ export default function RoboticsPortfolio() {
 
         {/* Footer */}
         <footer className="text-xs text-gray-400 pt-8 border-t border-gray-200">
-          <p>Last updated: February 2025</p>
+          <p>Last updated: November 2026</p>
         </footer>
       </div>
     </div>
