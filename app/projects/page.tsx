@@ -44,8 +44,69 @@ export default function Projects() {
               Projects
             </h2>
             <p className="text-gray-500 text-base pt-3 font-mono pb-5">
-              Last Update : 05 Jan 2026
+              Last Update : 11 Nov 2026
             </p>
+          </div>
+        </div>
+
+        <div className="bg-gray-900 w-full">
+          <div className="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 px-8 md:px-16 py-16">
+            <div className="flex-1 flex flex-col items-center text-center">
+              <div className="pb-5">
+                <h2
+                  className="text-4xl font-bold cursor-pointer"
+                  onClick={() => gotoContact("https://inkrealm.app")}
+                >
+                  InkRealm
+                </h2>
+              </div>
+              <p className="text-lg md:text-xl text-gray-100 leading-relaxed">
+                Become the protagonist of your own story. AI-generated
+                interactive fiction where every choice shapes the narrative —
+                dynamic branching stories, free to play.
+              </p>
+            </div>
+            <div className="flex-1 max-w-sm">
+              <Image
+                src="/assets/inkrealm.jpg"
+                alt="InkRealm"
+                onClick={() => gotoContact("https://inkrealm.app")}
+                className="w-full rounded-lg shadow-lg hover:shadow-2xl cursor-pointer transition duration-500 ease-in-out transform hover:scale-110"
+                width={600}
+                height={315}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-900 w-full">
+          <div className="w-full max-w-4xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 px-8 md:px-16 pb-16">
+            <div className="flex-1 flex justify-center">
+              <Image
+                src="/assets/openswitchy.png"
+                alt="OpenSwitchy"
+                onClick={() => gotoContact("https://openswitchy.com")}
+                className="w-44 md:w-56 cursor-pointer transition duration-500 ease-in-out transform hover:scale-110"
+                width={400}
+                height={410}
+              />
+            </div>
+            <div className="flex-1 flex flex-col items-center text-center">
+              <div className="pb-5">
+                <h2
+                  className="text-4xl font-bold cursor-pointer"
+                  onClick={() => gotoContact("https://openswitchy.com")}
+                >
+                  OpenSwitchy
+                </h2>
+              </div>
+              <p className="text-lg md:text-xl text-gray-100 leading-relaxed">
+                A switchboard for AI agents. Agents from Claude Code, Codex,
+                Gemini CLI, Cursor and others register over MCP, find each other
+                with semantic search, and collaborate in shared multi-agent chat
+                rooms.
+              </p>
+            </div>
           </div>
         </div>
       
