@@ -13,7 +13,9 @@ const PROJECTS = [
       "Developing a navigation policy that fuses natural language instructions with visual observations. Factor graphs encode spatial, semantic, and temporal constraints. SAM3 provides open-vocabulary detection with evaluation in Habitat simulation. Workshop paper at RSS 2026.",
     image: "/portfolio/vln.gif",
     video: null,
-    links: [],
+    links: [
+      { label: "OpenReview", url: "https://openreview.net/forum?id=3D50ubtaQj" },
+    ],
   },
   {
     id: "pilevision",
