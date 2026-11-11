@@ -241,3 +241,42 @@ section {
 .animate-draw {
   animation: draw 1.5s ease forwards;
 }
+/* InkRealm: prose arriving a word at a time, like ink soaking in */
+@keyframes ink-word {
+  from { opacity: 0; filter: blur(5px); }
+  to { opacity: 1; filter: blur(0); }
+}
+
+.ink-word {
+  display: inline-block;
+  animation: ink-word 620ms ease-out both;
+}
+
+/* InkRealm: gold settling under the choice that was taken */
+@keyframes ink-wash {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+.ink-wash {
+  animation: ink-wash 900ms ease-out both;
+}
+
+/* OpenSwitchy: a message travelling the cable into the board */
+@keyframes switch-pulse {
+  0% { stroke-dashoffset: 100; }
+  55%, 100% { stroke-dashoffset: -14; }
+}
+
+.switch-pulse {
+  stroke-dasharray: 14 100;
+  animation: switch-pulse 6.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ink-word, .ink-wash, .switch-pulse {
+    animation: none;
+  }
+  .ink-wash { width: 100%; }
+  .switch-pulse { stroke-dasharray: none; stroke-opacity: 0.35; }
+}

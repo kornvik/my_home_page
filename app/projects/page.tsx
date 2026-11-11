@@ -3,6 +3,8 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import LearnsByAIIllustration from "../components/LearnsByAIIllustration";
+import InkRealmScene from "../components/InkRealmScene";
+import SwitchboardScene from "../components/SwitchboardScene";
 
 export default function Projects() {
   useEffect(() => {
@@ -49,97 +51,113 @@ export default function Projects() {
           </div>
         </div>
 
-        <div className="bg-gray-900 w-full">
-          <div className="w-full max-w-4xl mx-auto flex flex-col md:flex-row items-center gap-8 px-8 md:px-16 py-16">
-            <div className="flex-1 flex flex-col items-center text-center">
-              <div className="pb-5">
-                <h2
-                  className="text-4xl font-bold cursor-pointer"
-                  onClick={() => gotoContact("https://inkrealm.app")}
-                >
-                  InkRealm
-                </h2>
-              </div>
-              <p className="text-lg md:text-xl text-gray-100 leading-relaxed">
-                Become the protagonist of your own story. AI-generated
-                interactive fiction where every choice shapes the narrative —
-                dynamic branching stories, free to play.
-              </p>
-            </div>
-            <div className="flex-1 max-w-sm">
-              <Image
-                src="/assets/inkrealm.jpg"
-                alt="InkRealm"
-                onClick={() => gotoContact("https://inkrealm.app")}
-                className="w-full rounded-lg shadow-lg hover:shadow-2xl cursor-pointer transition duration-500 ease-in-out transform hover:scale-110"
-                width={600}
-                height={315}
-              />
+        {/* InkRealm - the game\'s own cavern art, darkened, with a turn of play on top */}
+        <div className="relative w-full overflow-hidden">
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('/assets/inkrealm.jpg')", opacity: 0.6 }}
+          />
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(100deg, #0b1416 0%, rgba(11,20,22,0.95) 40%, rgba(11,20,22,0.3) 72%, rgba(11,20,22,0.75) 100%), linear-gradient(180deg, #0b1416 0%, transparent 22%, transparent 76%, #0b1416 100%)",
+            }}
+          />
+          <div className="relative w-full max-w-5xl mx-auto px-8 py-20 md:py-28">
+            <div className="max-w-xl">
+            <h2
+              className="cursor-pointer text-5xl md:text-6xl"
+              style={{
+                fontFamily: "var(--font-spectral), Georgia, serif",
+                fontWeight: 600,
+                letterSpacing: "-0.02em",
+                color: "#e8e2d4",
+              }}
+              onClick={() => gotoContact("https://inkrealm.app")}
+            >
+              InkRealm
+            </h2>
+            <p
+              className="mt-4 max-w-xl text-base md:text-lg leading-relaxed"
+              style={{ fontFamily: "var(--font-spectral), Georgia, serif", color: "#9fb3ae" }}
+            >
+              Become the protagonist of your own story. AI-generated interactive
+              fiction where every choice shapes the narrative.
+            </p>
+
+            <InkRealmScene />
+
+            <a
+              href="https://inkrealm.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-10 inline-block text-base md:text-lg"
+              style={{
+                fontFamily: "var(--font-spectral), Georgia, serif",
+                color: "#f0c987",
+                borderBottom: "1px solid rgba(240,201,135,0.4)",
+                paddingBottom: 2,
+              }}
+            >
+              Play free at inkrealm.app
+            </a>
             </div>
           </div>
         </div>
 
-        <div className="bg-gray-900 w-full">
-          <div className="w-full max-w-4xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 px-8 md:px-16 pb-16">
-            <div className="flex-1 flex justify-center">
-              <Image
-                src="/assets/openswitchy.png"
-                alt="OpenSwitchy"
-                onClick={() => gotoContact("https://openswitchy.com")}
-                className="w-44 md:w-56 cursor-pointer transition duration-500 ease-in-out transform hover:scale-110"
-                width={400}
-                height={410}
-              />
+        {/* OpenSwitchy - the board itself, with a message crossing it */}
+        <div className="relative w-full" style={{ background: "#070b12" }}>
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage:
+                "linear-gradient(#131d2e 1px, transparent 1px), linear-gradient(90deg, #131d2e 1px, transparent 1px)",
+              backgroundSize: "56px 56px",
+              opacity: 0.6,
+            }}
+          />
+          <div className="relative w-full max-w-5xl mx-auto px-8 py-20 md:py-24 flex flex-col md:flex-row items-center gap-10 md:gap-14">
+            <div className="w-full md:w-1/2 order-2 md:order-1">
+              <SwitchboardScene />
             </div>
-            <div className="flex-1 flex flex-col items-center text-center">
-              <div className="pb-5">
-                <h2
-                  className="text-4xl font-bold cursor-pointer"
-                  onClick={() => gotoContact("https://openswitchy.com")}
-                >
-                  OpenSwitchy
-                </h2>
-              </div>
-              <p className="text-lg md:text-xl text-gray-100 leading-relaxed">
+            <div className="w-full md:w-1/2 order-1 md:order-2">
+              <h2
+                className="cursor-pointer text-4xl md:text-5xl"
+                style={{
+                  fontFamily: "var(--font-plex-mono), monospace",
+                  fontWeight: 600,
+                  letterSpacing: "-0.04em",
+                  color: "#dceaf7",
+                }}
+                onClick={() => gotoContact("https://openswitchy.com")}
+              >
+                OpenSwitchy
+              </h2>
+              <p
+                className="mt-5 text-base md:text-lg leading-relaxed"
+                style={{ color: "#8fa9c4" }}
+              >
                 A switchboard for AI agents. Agents from Claude Code, Codex,
                 Gemini CLI, Cursor and others register over MCP, find each other
                 with semantic search, and collaborate in shared multi-agent chat
                 rooms.
               </p>
+              <code
+                className="mt-6 block w-full overflow-x-auto rounded py-3 px-4 text-xs md:text-sm"
+                style={{
+                  fontFamily: "var(--font-plex-mono), monospace",
+                  background: "#0c1626",
+                  color: "#7fd4ff",
+                  border: "1px solid #1b2b44",
+                }}
+              >
+                claude mcp add --transport http openswitchy https://openswitchy.com/mcp
+              </code>
             </div>
           </div>
         </div>
-      
-        {/* <div className="w-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 py-16">
-          <div className="w-full flex flex-row justify-around h-60 items-center px-10">
-            <div className="w-0 max-w-2xl xl:w-1/2 px-1 md:px-20">
-              <Image
-                src="/assets/learnsbyai.png"
-                alt="Learns By AI"
-                onClick={() => gotoContact("https://learnsbyai.com")}
-                className="w-full rounded-lg shadow-2xl hover:shadow-purple-500/50 cursor-pointer transition duration-500 ease-in-out transform hover:scale-105 hover:rotate-1"
-                width={600}
-                height={400}
-              />
-            </div>
-            <div className="w-full md:px-2 px-1 flex flex-col items-center">
-              <div className="cursor-pointer pb-5 flex flex-row items-center gap-3">
-                <h2
-                  className="3xl:text-5xl text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-400"
-                  onClick={() => gotoContact("https://learnsbyai.com")}
-                >
-                  Learns By AI
-                </h2>
-                <span className="text-4xl">🤖</span>
-              </div>
-              <p className="text-xl font-sans 2xl:text-3xl xl:text-2xl text-gray-100">
-                An AI-powered learning platform that helps students understand
-                complex topics through interactive lessons and personalized
-                feedback.
-              </p>
-            </div>
-          </div>
-        </div> */}
+
         <div className="w-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 pt-16 pb-48">
           <div className="w-full max-w-4xl mx-auto flex flex-col-reverse md:flex-row items-center gap-8 px-8 md:px-16">
             {/* Illustration - Now on LEFT */}
