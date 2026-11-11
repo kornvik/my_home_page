@@ -241,25 +241,17 @@ section {
 .animate-draw {
   animation: draw 1.5s ease forwards;
 }
-/* InkRealm: prose arriving a word at a time, like ink soaking in */
-@keyframes ink-word {
-  from { opacity: 0; filter: blur(5px); }
-  to { opacity: 1; filter: blur(0); }
+/* InkRealm: motes drifting around the mark, as on inkrealm.app */
+@keyframes ink-drift {
+  0%, 100% { transform: translateY(0); opacity: var(--mote-opacity); }
+  50% { transform: translateY(var(--mote-drift)); opacity: calc(var(--mote-opacity) * 1.7); }
 }
 
-.ink-word {
-  display: inline-block;
-  animation: ink-word 620ms ease-out both;
-}
-
-/* InkRealm: gold settling under the choice that was taken */
-@keyframes ink-wash {
-  from { width: 0; }
-  to { width: 100%; }
-}
-
-.ink-wash {
-  animation: ink-wash 900ms ease-out both;
+.ink-mote {
+  opacity: var(--mote-opacity);
+  animation-name: ink-drift;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
 }
 
 /* OpenSwitchy: a message travelling the cable into the board */
@@ -274,9 +266,8 @@ section {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .ink-word, .ink-wash, .switch-pulse {
+  .ink-mote, .switch-pulse {
     animation: none;
   }
-  .ink-wash { width: 100%; }
   .switch-pulse { stroke-dasharray: none; stroke-opacity: 0.35; }
 }

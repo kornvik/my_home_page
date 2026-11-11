@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Image from "next/image";
 import LearnsByAIIllustration from "../components/LearnsByAIIllustration";
-import InkRealmScene from "../components/InkRealmScene";
+import InkRealmHero from "../components/InkRealmHero";
 import SwitchboardScene from "../components/SwitchboardScene";
 
 export default function Projects() {
@@ -51,58 +51,63 @@ export default function Projects() {
           </div>
         </div>
 
-        {/* InkRealm - the game\'s own cavern art, darkened, with a turn of play on top */}
-        <div className="relative w-full overflow-hidden">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: "url('/assets/inkrealm.jpg')", opacity: 0.6 }}
-          />
+        {/* InkRealm - built to their own hero: the mark sunk into near-black,
+            motes drifting around it, the wordmark lockup */}
+        <div
+          className="relative w-full overflow-hidden"
+          style={{ background: "#0a0a0f" }}
+        >
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(100deg, #0b1416 0%, rgba(11,20,22,0.95) 40%, rgba(11,20,22,0.3) 72%, rgba(11,20,22,0.75) 100%), linear-gradient(180deg, #0b1416 0%, transparent 22%, transparent 76%, #0b1416 100%)",
+                "radial-gradient(ellipse 58% 52% at 50% 46%, #16161f 0%, #0a0a0f 72%)",
             }}
           />
-          <div className="relative w-full max-w-5xl mx-auto px-8 py-20 md:py-28">
-            <div className="max-w-xl">
+
+          <InkRealmHero />
+
+          <div className="relative w-full max-w-2xl mx-auto px-8 py-28 md:py-36 text-center">
             <h2
-              className="cursor-pointer text-5xl md:text-6xl"
+              className="cursor-pointer text-3xl md:text-5xl"
               style={{
-                fontFamily: "var(--font-spectral), Georgia, serif",
-                fontWeight: 600,
-                letterSpacing: "-0.02em",
-                color: "#e8e2d4",
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                fontWeight: 300,
+                letterSpacing: "0.3em",
               }}
               onClick={() => gotoContact("https://inkrealm.app")}
             >
-              InkRealm
+              <span style={{ color: "#d4a857" }}>INK</span>
+              <span style={{ color: "#a1a1aa" }}>REALM</span>
             </h2>
-            <p
-              className="mt-4 max-w-xl text-base md:text-lg leading-relaxed"
-              style={{ fontFamily: "var(--font-spectral), Georgia, serif", color: "#9fb3ae" }}
-            >
-              Become the protagonist of your own story. AI-generated interactive
-              fiction where every choice shapes the narrative.
-            </p>
 
-            <InkRealmScene />
+            <p
+              className="mx-auto mt-8 max-w-xl text-base md:text-lg leading-relaxed"
+              style={{
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                color: "#d4d4d8",
+              }}
+            >
+              That feeling when you finish a book and you&apos;re not ready to leave?
+              We built InkRealm for exactly that. Step back into your favorite
+              worlds and shape the story yourself.
+            </p>
 
             <a
               href="https://inkrealm.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="mt-10 inline-block text-base md:text-lg"
+              className="mt-10 inline-block text-xs md:text-sm"
               style={{
-                fontFamily: "var(--font-spectral), Georgia, serif",
-                color: "#f0c987",
-                borderBottom: "1px solid rgba(240,201,135,0.4)",
-                paddingBottom: 2,
+                fontFamily: "var(--font-inter), system-ui, sans-serif",
+                color: "#d4a857",
+                letterSpacing: "0.28em",
+                borderBottom: "1px solid rgba(212,168,87,0.35)",
+                paddingBottom: 6,
               }}
             >
-              Play free at inkrealm.app
+              PLAY FREE
             </a>
-            </div>
           </div>
         </div>
 
